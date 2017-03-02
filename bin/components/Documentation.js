@@ -2,18 +2,38 @@ import { Link } from 'react-router'
 import React, { Component } from 'react'
 
 class DocumentationComponent extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      sectionMargin: 0
+    }
+    this.updateSectionMargin = this.updateSectionMargin.bind(this)
+  }
+
   componentWillMount () {
     this.props.loading()
   }
 
   componentDidMount () {
+    this.updateSectionMargin()
     this.props.loaded()
   }
 
+  updateSectionMargin () {
+    const { offsetHeight: sectionHeight } = this.refs.section
+    const { offsetHeight: childHeight } = this.refs.sectionChild
+
+    this.setState({
+      sectionMargin: Math.floor((sectionHeight - childHeight) / 2)
+    })
+  }
+
   render () {
+    const style = { marginTop: `${this.state.sectionMargin}px` }
+
     return (
-      <section id="main-section">
-        <div>
+      <section id="main-section" ref="section">
+        <div ref="sectionChild" style={style}>
           <h2>Coming soon</h2>
           <h3>
             Sorry, the documentation is being written.<br/>

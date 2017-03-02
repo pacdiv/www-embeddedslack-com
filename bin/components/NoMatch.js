@@ -31,20 +31,24 @@ class NoMatchComponent extends Component {
   }
 
   updateSectionMargin () {
-    const { offsetHeight } = this.refs.sectionChild
-    this.setState({ sectionMargin: Math.floor(offsetHeight / 2) })
+    const { offsetHeight: sectionHeight } = this.refs.section
+    const { offsetHeight: childHeight } = this.refs.sectionChild
+
+    this.setState({
+      sectionMargin: Math.floor((sectionHeight - childHeight) / 2)
+    })
   }
 
   render () {
     const style = { marginTop: `${this.state.sectionMargin}px` }
 
     return (
-      <section id="notfound-section">
+      <section id="notfound-section" ref="section">
         <div ref="sectionChild" style={style}>
           <h1>404, page not found</h1>
           <h2>Hey, how did you end up here exactly ?</h2>
           <div className="row">
-            <div className="col-sm-4 col-sm-offset-4">
+            <div className="col-sm-4 col-sm-offset-4 image-container">
               <img
                 className="col-xs-12"
                 onLoad={this.updateSectionMargin}
